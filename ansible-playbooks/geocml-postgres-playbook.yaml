@@ -63,11 +63,21 @@
       community.postgresql.postgresql_set:
         name: listen_addresses
         value: "*"
+    - name: Set PSQL service port # RM ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      become_user: postgres
+      community.postgresql.postgresql_set:
+        name: port # RM ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        value: 5434 # RM ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     - name: Add PostGIS extension to geocml_db
       become_user: postgres
       community.postgresql.postgresql_ext:
         db: geocml_db
         name: postgis
+    - name: Enable postgis_raster extension
+      become_user: postgres
+      community.postgresql.postgresql_query:
+        db: geocml_db
+        query: CREATE EXTENSION postgis_raster;
     - name: Restart PostgreSQL service
       service:
         enabled: yes

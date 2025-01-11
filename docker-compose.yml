@@ -1,7 +1,7 @@
 ---
 version: "3.7"
 services:
-  geocml-task-scheduler:
+  geocml-task-scheduler-dev:
     build:
       context: .
       dockerfile: ./Dockerfiles/Dockerfile.geocml-task-scheduler
@@ -15,18 +15,18 @@ services:
       GEOCML_POSTGRES_PASSWORD: ${GEOCML_POSTGRES_PASSWORD}
       GEOCML_POSTGRES_ADMIN_PASSWORD: ${GEOCML_POSTGRES_ADMIN_PASSWORD}
     networks:
-      - geocml-network
+      - geocml-network-dev
     volumes:
       - type: bind
         source: ./persistence-layer
         target: /Persistence
-  geocml-desktop:
+  geocml-desktop-dev:
     build:
       context: .
       dockerfile: ./Dockerfiles/Dockerfile.geocml-desktop
     image: ghcr.io/geocml/geocml-base-deployment:desktop
     ports:
-      - "10000:10000"
+      - "10001:10000"
     volumes:
       - type: bind
         source: ./persistence-layer
@@ -35,32 +35,32 @@ services:
     environment:
       XPRA_PASSWORD: ${GEOCML_DESKTOP_PASSWORD}
     networks:
-      - geocml-network
-  geocml-postgres:
+      - geocml-network-dev
+  geocml-postgres-dev:
     build:
       context: .
       dockerfile: ./Dockerfiles/Dockerfile.geocml-postgres
     image: ghcr.io/geocml/geocml-base-deployment:postgres
     ports:
-      - "5432:5432"
+      - "5434:5432"
     hostname: geocml-postgres
     networks:
-      - geocml-network
-  geocml-server:
+      - geocml-network-dev
+  geocml-server-dev:
     build:
       context: .
       dockerfile: ./Dockerfiles/Dockerfile.geocml-server
     image: ghcr.io/geocml/geocml-base-deployment:server
     ports:
-      - "80:80"
+      - "8085:80"
     volumes:
       - type: bind
         source: ./persistence-layer
         target: /Persistence
     hostname: geocml-server
     networks:
-      - geocml-network
+      - geocml-network-dev
 networks:
-  geocml-network:
+  geocml-network-dev:
     external: true
     driver: bridge

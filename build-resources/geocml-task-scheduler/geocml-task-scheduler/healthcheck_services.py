@@ -8,7 +8,7 @@ def healthcheck_services():
     services = {
         "geocml-desktop": [10000, True],
         "geocml-server": [80, True],
-        "geocml-postgres": [5432, True],
+        "geocml-postgres": [5434, True],
     }
 
     path_to_status_file = os.path.join(os.sep, "Persistence", "geocml-status.yml")
